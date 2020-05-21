@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='The Witness ArrowSolver'
+rootProject.name='The Witness TriangleSolver'

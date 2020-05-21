@@ -19,7 +19,7 @@ fun Edge.toArrow(): String =
     else if (this.from.y < this.to.y) "↑"
     else throw RuntimeException("Invalid edge")
 
-class ArrowBlock(val lowerLeftPoint: Point, val numArrows: Int) {
+class TriangleBlock(val lowerLeftPoint: Point, val numTriangles: Int) {
     private val edges: List<Edge>
 
     init {
@@ -41,14 +41,14 @@ class ArrowBlock(val lowerLeftPoint: Point, val numArrows: Int) {
     }
 
     fun isConditionValid(visitedEdges: Set<Edge>) =
-        edges.filter { it in visitedEdges }.size == numArrows
+        edges.filter { it in visitedEdges }.size == numTriangles
 
     fun canConditionBeValid(visitedEdges: Set<Edge>) =
-        edges.filter { it in visitedEdges }.size <= numArrows
+        edges.filter { it in visitedEdges }.size <= numTriangles
 }
 
 class PuzzleSolver(
-    private val arrowBlocks: List<ArrowBlock>,
+    private val triangleBlocks: List<TriangleBlock>,
     private val numLines: Int,
     private val numColumns: Int
 ) {
@@ -101,8 +101,8 @@ class PuzzleSolver(
         return false;
     }
 
-    private fun isSolutionValid() = arrowBlocks.all { it.isConditionValid(visitedEdges) }
-    private fun canSolutionBeValid() = arrowBlocks.all { it.canConditionBeValid(visitedEdges) }
+    private fun isSolutionValid() = triangleBlocks.all { it.isConditionValid(visitedEdges) }
+    private fun canSolutionBeValid() = triangleBlocks.all { it.canConditionBeValid(visitedEdges) }
 
     private fun pointsThatCanBeVisitedFrom(point: Point) =
         point.neighbours().filter(this::canBeVisited)

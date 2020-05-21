@@ -10,7 +10,7 @@ import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
 
-    private val numArrowsInBlock: MutableMap<Point, Int> = HashMap()
+    private val numTrianglesInBlock: MutableMap<Point, Int> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (view.text.isEmpty()) {
-                        numArrowsInBlock.remove(buttonPoint)
+                        numTrianglesInBlock.remove(buttonPoint)
                     } else {
-                        numArrowsInBlock[buttonPoint] = view.text.length
+                        numTrianglesInBlock[buttonPoint] = view.text.length
                     }
                 }
             }
@@ -45,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         val textViewSolution = findViewById<TextView>(R.id.tvSolution);
         val solveButton = findViewById<Button>(R.id.solveButton)
         solveButton.setOnClickListener {
-            val listArrowBlocks =
-                numArrowsInBlock.map { entry -> ArrowBlock(entry.key, entry.value) }
-            val puzzleSolver = PuzzleSolver(listArrowBlocks, 5, 5)
+            val listTriangleBlocks =
+                numTrianglesInBlock.map { entry -> TriangleBlock(entry.key, entry.value) }
+            val puzzleSolver = PuzzleSolver(listTriangleBlocks, 5, 5)
             if (puzzleSolver.findSolution()) {
                 textViewSolution.text = puzzleSolver.getSolution()
             } else {
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         val clearButton = findViewById<Button>(R.id.clearButton)
         clearButton.setOnClickListener {
             gridLayout.children.forEach { (it as Button).text = "" }
-            numArrowsInBlock.clear()
+            numTrianglesInBlock.clear()
             textViewSolution.text = ""
         }
 
