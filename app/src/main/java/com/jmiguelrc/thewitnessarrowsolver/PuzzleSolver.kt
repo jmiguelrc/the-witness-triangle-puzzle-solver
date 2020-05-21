@@ -42,6 +42,9 @@ class ArrowBlock(val lowerLeftPoint: Point, val numArrows: Int) {
 
     fun isConditionValid(visitedEdges: Set<Edge>) =
         edges.filter { it in visitedEdges }.size == numArrows
+
+    fun canConditionBeValid(visitedEdges: Set<Edge>) =
+        edges.filter { it in visitedEdges }.size <= numArrows
 }
 
 class PuzzleSolver(
@@ -78,14 +81,18 @@ class PuzzleSolver(
 
     private fun visit(current: Point, finish: Point): Boolean {
         if (current == finish) {
-            return arrowBlocks.all { it.isConditionValid(visitedEdges) }
+            return isSolutionValid();
         }
 
         for (pointToVisit in pointsThatCanBeVisitedFrom(current)) {
             val newEdge = Edge(current, pointToVisit)
             visitedEdges.add(newEdge)
             visitedPoints.add(pointToVisit)
-            if (visit(pointToVisit, finish)) {
+            if (canSolutionBeValid() && visit(
+                    pointToVisit,
+                    finish
+                )
+            ) {
                 return true
             }
             visitedEdges.remove(newEdge)
@@ -93,6 +100,9 @@ class PuzzleSolver(
         }
         return false;
     }
+
+    private fun isSolutionValid() = arrowBlocks.all { it.isConditionValid(visitedEdges) }
+    private fun canSolutionBeValid() = arrowBlocks.all { it.canConditionBeValid(visitedEdges) }
 
     private fun pointsThatCanBeVisitedFrom(point: Point) =
         point.neighbours().filter(this::canBeVisited)
